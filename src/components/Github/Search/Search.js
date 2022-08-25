@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 import { Segment, Input } from 'semantic-ui-react';
 
-function Search({ search, setSearch }) {
+import './Search.scss';
+
+function Search({ search, setSearch, submitValue }) {
   return (
     <Segment className="Search">
       <form
         className="Search-form"
         onSubmit={(event) => {
           event.preventDefault();
-          console.log('implémenter le submit');
+          submitValue();
         }}
       >
         <Input
@@ -29,6 +31,7 @@ function Search({ search, setSearch }) {
 Search.propTypes = {
   search: PropTypes.string.isRequired,
   setSearch: PropTypes.func.isRequired,
+  submitValue: PropTypes.func.isRequired,
 };
 
 export default Search;

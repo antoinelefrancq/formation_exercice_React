@@ -5,30 +5,60 @@ import Counter from './Counter/Counter';
 import Header from './Header/Header';
 import Search from './Search/Search';
 import List from './List/List';
-
-import data from '../../data/repos';
+import Loader from './Loader/Loader';
 
 function Github() {
-  const [repos, setRepo] = useState(data.items);
+  const [repos, setRepo] = useState(null);
   const [search, setSearch] = useState('');
-  // const [repos, setRepo] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [resultNumber,setResult] = useState(null);
+  // const [repos, setRepo] = useState({items:[{}]});
 
-  function submitValue(value) {
-    axios.get(`https://api.github.com/search/repositories?q=${value}`)
+  const loadData = () => {
+    axios.get('https://api.github.com/search/repositories?q=REPOACHERCHER}')
       .then((res) => {
-        setRepo(res.items);
+        setRepo(res.data.items);
+        setResult(res.data.total_count);
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  function submitValue() {
+    setLoading(true);
+    axios.get(`https://api.github.com/search/repositories?q=${search}`)
+      .then((res) => {
+        setRepo(res.data.items);
+        setResult(res.data.total_count);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
   return (
     <div className="Github">
       <Header />
-      <Search search={search} setSearch={setSearch} />
-      <Counter />
-      <List repos={repos} />
+      <Search
+        search={search}
+        setSearch={setSearch}
+        // eslint-disable-next-line react/jsx-no-bind
+        submitValue={submitValue}
+      />
+      {loading && <Loader />}
+      {!loading && <Counter resultNumber={resultNumber} />}
+      {!loading && <List repos={repos} />}
     </div>
   );
 }

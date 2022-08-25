@@ -1,9 +1,15 @@
 .app {
-  width: 500px;
+  width: 80vw;
   margin: 1em auto;
-  text-align: center;
+  background: #ECF0F1;
+  padding: 0 1rem;
+}
+#root{
+  background-color: #bdc3c7;
+  height: 100vh;
+  overflow-y: auto;
 }
 
-.app img {
-  max-width: 150px;
+body{
+  overflow: hidden;
 }

@@ -1,0 +1,10 @@
+.Element{
+    width: 25vw;
+    position: static;
+    &-image{
+        width: calc(100% + 28px);
+        margin: 0 -14px;
+        position: relative;
+        top: -14px;
+    }
+}

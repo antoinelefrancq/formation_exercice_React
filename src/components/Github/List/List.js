@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
-import { Segment } from 'semantic-ui-react';
 import Element from './Element/Element';
+
+import './List.scss';
 
 function List({ repos }) {
   return (
-    <Segment className="List">
+    <div className="List">
       {repos.map((repo) => (
         <Element key={repo.id} {...repo} />
       ))}
-    </Segment>
+    </div>
   );
 }
 List.propTypes = {
