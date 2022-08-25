@@ -1,0 +1,9 @@
+@use 'src/styles/vars';
+
+.not-found {
+  font-size: 5rem;
+  margin: 1rem;
+  text-align: center;
+  color: darkred;
+  font-weight: 900;
+}

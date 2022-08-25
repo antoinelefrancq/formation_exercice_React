@@ -1,17 +1,21 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 import Counter from './Counter/Counter';
 import Header from './Header/Header';
 import Search from './Search/Search';
 import List from './List/List';
 import Loader from './Loader/Loader';
+import Nav from './Nav/nav';
+import Faq from './FAQ/FAQ';
+import NotFound from './NotFound';
 
 function Github() {
   const [repos, setRepo] = useState(null);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
-  const [resultNumber,setResult] = useState(null);
+  const [resultNumber, setResult] = useState(null);
   // const [repos, setRepo] = useState({items:[{}]});
 
   const loadData = () => {
@@ -40,6 +44,7 @@ function Github() {
         setResult(res.data.total_count);
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.error(err);
       })
       .finally(() => {
@@ -50,15 +55,28 @@ function Github() {
   return (
     <div className="Github">
       <Header />
-      <Search
-        search={search}
-        setSearch={setSearch}
+      <Nav />
+      <Routes>
+        <Route
+          path="/"
+          element={(
+            <div className="Searching">
+              <Search
+                search={search}
+                setSearch={setSearch}
         // eslint-disable-next-line react/jsx-no-bind
-        submitValue={submitValue}
-      />
-      {loading && <Loader />}
-      {!loading && <Counter resultNumber={resultNumber} />}
-      {!loading && <List repos={repos} />}
+                submitValue={submitValue}
+              />
+              {loading && <Loader />}
+              {!loading && <Counter resultNumber={resultNumber} />}
+              {!loading && <List repos={repos} />}
+            </div>
+)}
+        />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
     </div>
   );
 }
