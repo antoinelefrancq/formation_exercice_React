@@ -16,9 +16,10 @@ function Github() {
   const [repos, setRepo] = useState(null);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loading2,setLoading2] = useState(false);
   const [resultNumber, setResult] = useState(null);
-  const [pageNumber,setPage] = useState(1);
-  // const [repos, setRepo] = useState({items:[{}]});
+  const [pageNumber, setPage] = useState(2);
+
 
   const loadData = () => {
     axios.get('https://api.github.com/search/repositories?q=REPOACHERCHER&sort=stars&order=desc&page=1&per_page=9')
@@ -34,14 +35,31 @@ function Github() {
       });
   };
 
+  function loadMore() {
+    setLoading2(true)
+    axios.get(`https://api.github.com/search/repositories?q=${search}&sort=stars&order=desc&page=${pageNumber}&per_page=9`)
+      .then((res) => {
+        setRepo([...repos, ...res.data.items]);
+      })
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      })
+      .finally(() => {
+        setLoading2(false);
+      });
+  }
+
   useEffect(() => {
     loadData();
   }, []);
 
   function submitValue() {
     setLoading(true);
-    axios.get(`https://api.github.com/search/repositories?q=${search}&sort=stars&order=desc&page=1&per_page=${9 * pageNumber}`)
+    setPage(2);
+    axios.get(`https://api.github.com/search/repositories?q=${search}&sort=stars&order=desc&page=1&per_page=9`)
       .then((res) => {
+        console.log(res.data)
         setRepo(res.data.items);
         setResult(res.data.total_count);
       })
@@ -72,7 +90,8 @@ function Github() {
               {loading && <Loader />}
               {!loading && <Counter resultNumber={resultNumber} />}
               {!loading && <List repos={repos} />}
-              {!loading && <MoreResults pageNumber={pageNumber} setPage={setPage} submitValue={submitValue} />}
+              {!loading && loading2 && <Loader />}
+              {!loading && !loading2 && <MoreResults pageNumber={pageNumber} setPage={setPage} loadMore={loadMore} />}
             </div>
 )}
         />

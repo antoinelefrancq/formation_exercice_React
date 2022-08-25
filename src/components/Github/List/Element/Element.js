@@ -1,8 +1,9 @@
+/* eslint-disable react/destructuring-assignment */
 import PropTypes from 'prop-types';
 
 import { Segment } from 'semantic-ui-react';
 
-import './Element.scss'
+import './Element.scss';
 
 function Element(repo) {
   return (

@@ -1,15 +1,14 @@
 import PropTypes from 'prop-types';
 import { Button, Icon, Segment } from 'semantic-ui-react';
 
-function MoreResults({ pageNumber, setPage, submitValue }) {
+function MoreResults({ pageNumber, setPage, loadMore }) {
   return (
     <Segment>
       <Button
         animated
         onClick={() => {
-          console.log('je clique sur mon bouton');
+          loadMore();
           setPage(pageNumber + 1);
-          submitValue();
         }}
       >
         <Button.Content visible>Plus de résultats</Button.Content>
@@ -24,7 +23,7 @@ function MoreResults({ pageNumber, setPage, submitValue }) {
 MoreResults.propTypes = {
   pageNumber: PropTypes.number.isRequired,
   setPage: PropTypes.func.isRequired,
-  submitValue: PropTypes.func.isRequired,
+  loadMore: PropTypes.func.isRequired,
 };
 
 export default MoreResults;
